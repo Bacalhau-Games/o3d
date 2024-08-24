@@ -10,8 +10,32 @@ class O3dDataSource implements O3DControllerInterface {
   WebViewController? webViewController;
   String id;
 
-  O3dDataSource({this.webViewController, required this.id})
-      : _o3dImp = O3dImp(webViewController: webViewController, id: id);
+  O3dDataSource({this.webViewController, required this.id, this.onLoadCallback, this.onBeforeRenderCallback})
+      : _o3dImp = O3dImp(webViewController: webViewController, id: id) {
+          _o3dImp.onLoadCallback = onLoadCallback;
+          _o3dImp.onBeforeRenderCallback = onBeforeRenderCallback;
+  }
+
+  @override
+  String getModelName() => _o3dImp.getModelName();
+
+  @override
+  void setupEvents() => _o3dImp.setupEvents();
+
+  @override
+  VoidCallback? onLoadCallback;
+
+  @override
+  VoidCallback? onBeforeRenderCallback;
+  
+  @override
+  void animationEvent(String message) => _o3dImp.animationEvent(message);
+  
+  @override
+  void animationStopped() => _o3dImp.animationStopped();
+
+  @override
+  void animationLoop() => _o3dImp.animationLoop();
 
   @override
   void cameraOrbit(double theta, double phi, double radius) =>

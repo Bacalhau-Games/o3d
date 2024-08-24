@@ -2,6 +2,8 @@ class HtmlHtmlElement {
   dynamic get style => null;
 
   void setInnerHtml(String html, {NodeValidator? validator}) {}
+
+  void remove() {}
 }
 
 class NodeValidatorBuilder extends NodeValidator {

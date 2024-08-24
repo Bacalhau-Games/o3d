@@ -8,6 +8,8 @@ abstract class O3DControllerInterface {
   /// javascript code
   void customJsCode(String code);
 
+  String getModelName();
+
   /// [cameraOrbit] function
   /// Set the starting and/or subsequent orbital position of the camera.
   /// You can control the azimuthal, theta, and polar, phi, angles (phi is measured down from the top),
@@ -78,6 +80,18 @@ abstract class O3DControllerInterface {
   /// [resetAnimation]
   /// Causes animation to be played from first frame
   void resetAnimation();
+
+  void setupEvents();
+
+  VoidCallback? onLoadCallback;
+
+  VoidCallback? onBeforeRenderCallback;
+
+  void animationEvent(String message);
+  
+  void animationLoop();
+
+  void animationStopped();
 
   /// It will return available animations list of 3D model as List<String>
   Future<List<String>> availableAnimations();

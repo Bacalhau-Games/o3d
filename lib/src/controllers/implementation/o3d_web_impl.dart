@@ -2,7 +2,10 @@
 import 'package:flutter/services.dart';
 import 'package:o3d/src/controllers/interfaces/o3d_controller_interface.dart';
 import 'dart:js' as js;
+import 'dart:html' as dart_html;
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter/scheduler.dart';
+import 'dart:developer';
 
 class O3dImp implements O3DControllerInterface {
   final WebViewController? webViewController;
@@ -12,10 +15,46 @@ class O3dImp implements O3DControllerInterface {
   O3dImp({
     this.webViewController,
     required this.id,
-  })  : assert(webViewController == null,
-            PlatformException(code: '130', message: 'Mismatch platform usage')),
-        model = 'o3d$id';
+  })  {
+    assert(webViewController == null, PlatformException(code: '130', message: 'Mismatch platform usage'));
+    model = 'o3d$id';
+  }
 
+  @override
+  void setupEvents() {
+    dart_html.Element? modelviewer = dart_html.window.document.querySelector('model-viewer');
+    modelviewer?.addEventListener('finished', (e) => animationEvent('finished'));
+    modelviewer?.addEventListener('load', (e) => onLoadCallback?.call());
+    modelviewer?.addEventListener('before-render', (e) => onBeforeRenderCallback?.call());
+  }
+
+  @override
+  VoidCallback? onLoadCallback;
+  
+  @override
+  VoidCallback? onBeforeRenderCallback;
+
+  @override
+  void animationEvent(String message) {
+    if (message == 'finished')
+    {
+      // animationStopped();
+    }
+    else if (message == 'loop')
+    {
+      animationLoop();
+    }
+  }
+
+  @override
+  void animationStopped() => pause();
+
+  @override
+  void animationLoop() => {};
+
+  @override
+  String getModelName() => model;
+  
   @override
   void cameraOrbit(double theta, double phi, double radius) {
     customJsCode('$model.cameraOrbit = "${theta}deg ${phi}deg $radius%";');

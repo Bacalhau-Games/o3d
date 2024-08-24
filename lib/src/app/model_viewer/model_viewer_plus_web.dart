@@ -4,18 +4,29 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 import 'html_builder.dart';
-import '../fake/dart_html_fake.dart' if (dart.library.html) 'dart:html';
+// import '../fake/dart_html_fake.dart' if (dart.library.html) 'dart:html';
+import 'dart:html';
 import '../fake/dart_ui_fake.dart' if (dart.library.html) 'dart:ui_web'
     as ui_web;
 import 'o3d_model_viewer.dart';
 
 class ModelViewerState extends State<O3DModelViewer> {
   bool _isLoading = true;
+  HtmlHtmlElement? _htmlHtmlElement = null;
 
   @override
   void initState() {
     super.initState();
     unawaited(generateModelViewerHtml());
+  }
+
+  @override
+  void dispose() {
+    _htmlHtmlElement?.children.clear();
+    _htmlHtmlElement?.remove();
+    _htmlHtmlElement?.setInnerHtml('');
+    _htmlHtmlElement = null;
+    super.dispose();
   }
 
   /// To generate the HTML code for using the model viewer.
@@ -31,7 +42,7 @@ class ModelViewerState extends State<O3DModelViewer> {
 
     ui_web.platformViewRegistry.registerViewFactory(
       'babakcode-model-viewer-html-${widget.id}',
-      (viewId) => HtmlHtmlElement()
+      (viewId) => _htmlHtmlElement = HtmlHtmlElement()
         // ignore: avoid_dynamic_calls
         ..style.border = 'none'
         // ignore: avoid_dynamic_calls
@@ -57,6 +68,14 @@ class ModelViewerState extends State<O3DModelViewer> {
         : HtmlElementView(
             viewType: 'babakcode-model-viewer-html-${widget.id}',
             key: Key(widget.id),
+            onPlatformViewCreated: (id) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (!_isLoading)
+                {
+                  widget.controller?.setupEvents();
+                }
+              });
+            },
           );
   }
 

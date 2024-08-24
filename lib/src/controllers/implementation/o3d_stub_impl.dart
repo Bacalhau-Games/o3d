@@ -15,6 +15,34 @@ class O3dImp implements O3DControllerInterface {
   }) : model = 'o3d$id';
 
   @override
+  String getModelName() => model;
+
+  @override
+  void setupEvents() {
+    // not needed due to javascriptChannels
+  }
+  
+  @override
+  VoidCallback? onLoadCallback;
+
+  @override
+  VoidCallback? onBeforeRenderCallback;
+
+  @override
+  void animationEvent(String message) {
+    if (message == 'finished')
+    {
+      animationStopped();
+    }
+  }
+  
+  @override
+  void animationStopped() => {};
+
+  @override
+  void animationLoop() => {};
+
+  @override
   void cameraOrbit(double theta, double phi, double radius) {
     customJsCode('$model.cameraOrbit = "${theta}deg ${phi}deg $radius%";');
   }

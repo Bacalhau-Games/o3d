@@ -8,10 +8,13 @@ class Utils {
       'BabakCode${random.nextInt(99999)}${random.nextInt(99999)}';
 
   String relatedJs({required String id}) => '''
-  const o3d$id = document.querySelector('#$id');
-  const defaultCameraOrbit$id = o3d$id.cameraOrbit;
-customJsCode$id = (code) => { eval(code) }
-customEvaluateWithResult$id = (code) => { return eval(code) }
+  var o3d$id = document.querySelector('#$id');
+  var o3dscene$id = null;
+  get_threejs_o3d$id = () => { return o3d$id[Object.getOwnPropertySymbols(o3d$id).find(e => e.description === 'scene')]; };
+  get_scene_o3d$id = () => { if (o3dscene$id == null ) { o3dscene$id = get_threejs_o3d$id()._model; }; return o3dscene$id; };
+  var defaultCameraOrbit$id = o3d$id.cameraOrbit;
+  customJsCode$id = (code) => { eval(code) }
+  customEvaluateWithResult$id = (code) => { return eval(code) }
   ''';
 
   /// Covert tuple string to list

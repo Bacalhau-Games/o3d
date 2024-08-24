@@ -5,6 +5,7 @@ import 'package:o3d/src/utils/utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../controllers/interfaces/o3d_controller_interface.dart';
 import 'model_viewer/o3d_model_viewer.dart';
+import 'package:flutter/scheduler.dart';
 
 part '../controllers/controller.dart';
 
@@ -65,6 +66,7 @@ class O3D extends StatefulWidget {
       this.debugLogging = false,
       this.javascriptChannels,
       this.onWebViewCreated,
+      this.onLoadFinished,
       super.key});
 
   const O3D.network(
@@ -123,6 +125,7 @@ class O3D extends StatefulWidget {
       this.debugLogging = false,
       this.javascriptChannels,
       this.onWebViewCreated,
+      this.onLoadFinished,
       super.key});
 
   const O3D(
@@ -181,6 +184,7 @@ class O3D extends StatefulWidget {
       this.debugLogging = false,
       this.javascriptChannels,
       this.onWebViewCreated,
+      this.onLoadFinished,
       super.key});
 
   // Loading Attributes
@@ -726,6 +730,9 @@ class O3D extends StatefulWidget {
   /// Called *after* the logic that initializes the model-viewer.
   final ValueChanged<WebViewController>? onWebViewCreated;
 
+  /// Method to call back once everything is loaded up
+  final VoidCallback? onLoadFinished;
+
   @override
   State<O3D> createState() => _O3DState();
 }
@@ -742,10 +749,11 @@ class _O3DState extends State<O3D> {
     _relatedJs = widget.relatedJs ?? "";
     _relatedJs = _utils.relatedJs(id: _id) + _relatedJs;
     _controller = (widget.controller ?? O3DController())
-      .._dataSource = O3dDataSource(id: _id);
+      .._dataSource = O3dDataSource(id: _id, onLoadCallback: widget.controller?.onLoadCallback, onBeforeRenderCallback: widget.controller?.onBeforeRenderCallback);
+      
     super.initState();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return O3DModelViewer(
@@ -808,10 +816,10 @@ class _O3DState extends State<O3D> {
       // overwriteNodeValidatorBuilder: widget.overwriteNodeValidatorBuilder,
       javascriptChannels: widget.javascriptChannels,
       onWebViewCreated: (data) {
-        widget.onWebViewCreated?.call(data);
-        _controller._dataSource =
-            O3dDataSource(id: _id, webViewController: data);
-      },
+          widget.onWebViewCreated?.call(data);
+          _controller._dataSource =
+              O3dDataSource(id: _id, webViewController: data);
+        },
     );
   }
 }

@@ -2,6 +2,27 @@ part of '../app/o3d.dart';
 
 class O3DController implements O3DControllerInterface {
   late O3dDataSource _dataSource;
+  
+  @override
+  String getModelName() => _dataSource.getModelName();
+  
+  @override
+  void setupEvents() => _dataSource.setupEvents();
+
+  @override
+  VoidCallback? onLoadCallback;
+
+  @override
+  VoidCallback? onBeforeRenderCallback;
+  
+  @override
+  void animationLoop() => _dataSource.animationLoop();
+
+  @override
+  void animationStopped() => _dataSource.animationStopped();
+  
+  @override
+  void animationEvent(String message) => _dataSource.animationEvent(message);
 
   @override
   void cameraOrbit(double theta, double phi, double radius) =>
