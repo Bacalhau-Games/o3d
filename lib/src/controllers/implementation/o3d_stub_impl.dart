@@ -157,8 +157,9 @@ class O3dImp implements O3DControllerInterface {
 
   @override
   void customJsCode(String code) {
+    // FabioR: Change from eval to Function to ensure cross-browser compatibility
     webViewController?.runJavaScript('''(() => {
-        customJsCode$id('$code'); 
+        var o3dNewFun = new Function('$code')();
       })();
     ''');
   }

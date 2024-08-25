@@ -233,7 +233,6 @@ class ModelViewerState extends State<O3DModelViewer> {
     setState(() => _webViewController = webViewController);
     widget.controller?.logger?.call('initialized webViewController');
     widget.controller?.setupEvents();
-    widget.controller?.onLoadCallback?.call();
     // Future.delayed(const Duration(seconds: 5),() => _webViewController?.loadRequest(Uri.parse('${_proxyURL}model')));
   }
 

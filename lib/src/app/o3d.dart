@@ -66,7 +66,6 @@ class O3D extends StatefulWidget {
       this.debugLogging = false,
       this.javascriptChannels,
       this.onWebViewCreated,
-      this.onLoadFinished,
       super.key});
 
   const O3D.network(
@@ -125,7 +124,6 @@ class O3D extends StatefulWidget {
       this.debugLogging = false,
       this.javascriptChannels,
       this.onWebViewCreated,
-      this.onLoadFinished,
       super.key});
 
   const O3D(
@@ -184,7 +182,6 @@ class O3D extends StatefulWidget {
       this.debugLogging = false,
       this.javascriptChannels,
       this.onWebViewCreated,
-      this.onLoadFinished,
       super.key});
 
   // Loading Attributes
@@ -729,9 +726,6 @@ class O3D extends StatefulWidget {
   ///
   /// Called *after* the logic that initializes the model-viewer.
   final ValueChanged<WebViewController>? onWebViewCreated;
-
-  /// Method to call back once everything is loaded up
-  final VoidCallback? onLoadFinished;
 
   @override
   State<O3D> createState() => _O3DState();

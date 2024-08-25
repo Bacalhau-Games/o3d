@@ -9,6 +9,14 @@ class Utils {
 
   String relatedJs({required String id}) => '''
   var o3d$id = document.querySelector('#$id');
+  
+  // FabioR: Proper JavascriptChannel configuration
+  if (o3d$id) {
+    o3d$id.addEventListener('finished', function(event) { if (typeof o3dAnimFinished != 'undefined' && o3dAnimFinished != null) { o3dAnimFinished.postMessage('finished'); }});
+    o3d$id.addEventListener('load', function(event) { if (typeof o3dLoaded != 'undefined' && o3dLoaded != null) { o3dLoaded.postMessage('load'); }});
+    o3d$id.addEventListener('before-render', function(event) { if (typeof o3dBeforeRender != 'undefined' && o3dBeforeRender != null) { o3dBeforeRender.postMessage('before-render'); }});
+  }
+  
   var o3dscene$id = null;
   get_threejs_o3d$id = () => { return o3d$id[Object.getOwnPropertySymbols(o3d$id).find(e => e.description === 'scene')]; };
   get_scene_o3d$id = () => { if (o3dscene$id == null ) { o3dscene$id = get_threejs_o3d$id()._model; }; return o3dscene$id; };
