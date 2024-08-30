@@ -9,7 +9,7 @@ class Utils {
 
   String relatedJs({required String id}) => '''
   var o3d$id = document.querySelector('#$id');
-  
+  var _base_jaw_rotation = 0.0;
   // FabioR: Proper JavascriptChannel configuration
   if (o3d$id) {
     o3d$id.addEventListener('finished', function(event) { if (typeof o3dAnimFinished != 'undefined' && o3dAnimFinished != null) { o3dAnimFinished.postMessage('finished'); }});
