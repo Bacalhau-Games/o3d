@@ -26,6 +26,7 @@ class O3dImp implements O3DControllerInterface {
     modelviewer?.addEventListener('finished', (e) => animationEvent('finished'));
     modelviewer?.addEventListener('load', (e) => onLoadCallback?.call());
     modelviewer?.addEventListener('before-render', (e) => onBeforeRenderCallback?.call());
+    // FabioR: TODO: implement dispose to call removeEventListener
   }
 
   @override
